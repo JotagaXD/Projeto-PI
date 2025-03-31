@@ -15,8 +15,8 @@ void set_keyboard(Vector2 *keyboard) {
 }
 
 void set_file(FILE **words, FILE **tips) {
-    words[0] = fopen("D:\\Users\\jhmg\\Desktop\\fase1\\words.txt", "r");
-    tips[0] = fopen("D:\\Users\\jhmg\\Desktop\\fase1\\tips.txt", "r");
+    words[0] = fopen("D:\\Users\\jhmg\\Desktop\\joguin\\words.txt", "r");
+    tips[0] = fopen("D:\\Users\\jhmg\\Desktop\\joguin\\tips.txt", "r");
 }
 
 char **set_word() {

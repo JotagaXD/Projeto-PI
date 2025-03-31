@@ -40,7 +40,7 @@ void drawKeyboard(Vector2 *keyboard, int target) {
     }
 }
 
-void DrawUpLife(char *str_cura, bool *up_life, int *opacidade, int *scroll1, int *life, int *cura){
+void DrawUpLife(char *str_cura, bool *up_life, int *opacidade, int *scroll1){
     if (*opacidade < 255){
         Color red_up = {255, 0, 0, 255 - *opacidade};
         DrawText(str_cura, 210, 100 - *scroll1, 60, red_up);
@@ -50,8 +50,6 @@ void DrawUpLife(char *str_cura, bool *up_life, int *opacidade, int *scroll1, int
         *opacidade = 0;
         *up_life = false;
         *scroll1 = 0;
-        *life += *cura;
-        if (*life > 200) *life = 200;
     }
 }
 
