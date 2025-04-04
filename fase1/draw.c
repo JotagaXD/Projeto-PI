@@ -40,23 +40,23 @@ void drawKeyboard(Vector2 *keyboard, int target) {
     }
 }
 
-void DrawUpLife(char *str_cura, bool *up_life, int *opacidade, int *scroll1){
+void DrawUpLife(char *str_cura, bool *up_life, int *opacidade, int *scroll1, int *cura){
     if (*opacidade < 255){
         Color red_up = {255, 0, 0, 255 - *opacidade};
-        DrawText(str_cura, 210, 100 - *scroll1, 60, red_up);
+        DrawText(str_cura, 192, 100 - *scroll1, 60, red_up);
         *scroll1 += 2;
         *opacidade += 8;
     } else {
         *opacidade = 0;
         *up_life = false;
-        *scroll1 = 0;
+        *scroll1 = 0;     
     }
 }
 
 void DrawDownLife(char *str_dano, bool *down_life, int *opacidade, int *scroll1){
     if (*opacidade < 255){
         Color green_down = {0, 255, 0, 255 - *opacidade};
-        DrawText(str_dano, 210, 180 + *scroll1, 60, green_down);
+        DrawText(str_dano, 198, 180 + *scroll1, 60, green_down);
         *scroll1 += 2;
         *opacidade += 8;
     } else {
@@ -66,11 +66,28 @@ void DrawDownLife(char *str_dano, bool *down_life, int *opacidade, int *scroll1)
     }
 }
 
-void DrawTip(char *tip, int *timer){
-    *timer = *timer + 1;
-    if (*timer < 60) {
-    } else if (*timer < 180){ 
-        DrawText(tip, 960 - strlen(tip)*10l, 350, 40, YELLOW);
+void DrawTip(char *tip, int *timer2, int *scroll3, int *opacidade3){
+    if (*timer2 < 60) {
+        *timer2 = *timer2 + 1;
+    } else if (*opacidade3 < 255 && *timer2 == 60){
+        Color yellow_tip = {253, 249, 0, *opacidade3};
+        DrawText(tip, 850 - strlen(tip)*10 + *scroll3, 350, 40, yellow_tip);
+        *scroll3 += 2;
+        *opacidade3 += 13;
+    } else if (*timer2 < 180){ 
+        *timer2 = *timer2 + 1;
+        DrawText(tip, 850 - strlen(tip)*10 + *scroll3, 350, 40, YELLOW);
+        *scroll3 += 1;
+        *opacidade3 = 0;
+    } else if (*opacidade3 < 255 && *timer2 == 180){
+        Color yellow_tip = {253, 249, 0, 255 - *opacidade3};
+        DrawText(tip, 850 - strlen(tip)*10 + *scroll3, 350, 40, yellow_tip);
+        *scroll3 += 2;
+        *opacidade3 += 13;
+    } else {
+        *scroll3 = 0;
+        *opacidade3 = 0;
+        *timer2 += 1;
     }
 }
 
