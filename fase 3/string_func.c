@@ -31,10 +31,12 @@ StringActions* insertAtEnd(StringActions* head, char* string, int* Num_ammo) {
 }
 
 StringActions* deleteStringActions(StringActions* head, int* Num_ammo) {
-    if ((*Num_ammo) > 0) (*Num_ammo)--;
-    StringActions* temp = head;
-    head = head->next;
-    free(temp);
+    if ((*Num_ammo) > 0) { 
+        (*Num_ammo)--;
+        StringActions* temp = head;
+        head = head->next;
+        free(temp);
+    }
     return head;
 }
 
@@ -65,9 +67,9 @@ void UpdateTextbox(StringActions *head, char *action_string, int *letterCount, i
 
     if (IsKeyPressed(KEY_ENTER)) {
         if (strcmp(action_string, head->string) == 0) {
-            letterCount = 0;
+            (*letterCount) = 0;
             action_string[(*letterCount)] = '\0';
-            head = deleteStringActions(head, &Num_ammo);
+            //head = deleteStringActions(head, &Num_ammo);
         }
     }
 }
