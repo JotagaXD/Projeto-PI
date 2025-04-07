@@ -2,15 +2,38 @@
 #include <raylib.h>
 #include "draw.h"
 
-void drawKeyboard(Vector2 *keyboard, Texture2D *keys, int target) {
-    for (int i = 0; i < 26; i++){
+void drawKeyboard(Vector2 *keyboard, Texture2D *keys, Texture2D mole, int target, int sel) {
+    for (int i = 9; i > -1; i--){
         if (i != target){
-            DrawRectangle(keyboard[i].x, keyboard[i].y, 70, 70, WHITE);
-            DrawTexture(keys[i], keyboard[i].x, keyboard[i].y, WHITE);
+            if (i == sel){
+                DrawTextureEx(keys[i], (Vector2){keyboard[i].x, keyboard[i].y + 20}, 0, 0.22, WHITE);
+            } else {
+                DrawTextureEx(keys[i], keyboard[i], 0, 0.22, WHITE);
+            }
         } else {
-            Color random = {GetRandomValue(0, 255), GetRandomValue(0, 255), GetRandomValue(0, 255), 255};
-            
-           DrawRectangle(keyboard[i].x, keyboard[i].y, 70, 70, random);
+            DrawTextureEx(mole, (Vector2){keyboard[i].x - 10, keyboard[i].y - 30}, 0, 0.5, WHITE);
+        }
+    }
+    for (int i = 18; i > 9; i--){
+        if (i != target){
+            if (i == sel){
+                DrawTextureEx(keys[i], (Vector2){keyboard[i].x, keyboard[i].y + 20}, 0, 0.22, WHITE);
+            } else {
+                DrawTextureEx(keys[i], keyboard[i], 0, 0.22, WHITE);
+            }
+        } else {
+            DrawTextureEx(mole, (Vector2){keyboard[i].x - 10, keyboard[i].y - 30}, 0, 0.5, WHITE);
+        }
+    }
+    for (int i = 25; i > 18; i--){
+        if (i != target){
+            if (i == sel){
+                DrawTextureEx(keys[i], (Vector2){keyboard[i].x, keyboard[i].y + 20}, 0, 0.22, WHITE);
+            } else {
+                DrawTextureEx(keys[i], keyboard[i], 0, 0.22, WHITE);
+            }
+        } else {
+            DrawTextureEx(mole, (Vector2){keyboard[i].x - 10, keyboard[i].y - 30}, 0, 0.5, WHITE);
         }
     }
 }

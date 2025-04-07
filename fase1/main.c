@@ -13,7 +13,7 @@ int main () {
     Vector2 keyboard[26];
     set_keyboard(keyboard);  // define as posições de cada tecla do teclado na interface do jogo
     Texture2D keys[26];
-    set_keys(keys);
+    Texture2D mole;
 
     FILE *words, *tips;
     set_file(&words, &tips);  // seta os ponteiros dos arquivos
@@ -25,6 +25,10 @@ int main () {
     bool end = false, read = true, up_life = false, down_life = false, down_time = false, change = false;
     
     InitWindow(1920, 1080, "My first RAYLIB program!");
+
+    set_keys(keys);
+    mole = LoadTexture("sprites\\sprites_toupeira\\toupeirafinal.png");
+    
     SetTargetFPS(60);
 
     // game loop
@@ -94,7 +98,7 @@ int main () {
         // drawing
         BeginDrawing();
         ClearBackground(BLACK);
-        drawKeyboard(keyboard, keys, target);  // desenha o teclado
+        drawKeyboard(keyboard, keys, mole, target, sel);  // desenha o teclado
         if (up_life == true){
             DrawUpLife(str_cura, &up_life, &opacidade1, &scroll1, &cura); // animação de cura
         }
