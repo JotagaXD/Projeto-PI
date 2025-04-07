@@ -12,6 +12,8 @@ int main () {
 
     Vector2 keyboard[26];
     set_keyboard(keyboard);  // define as posições de cada tecla do teclado na interface do jogo
+    Texture2D keys[26];
+    set_keys(keys);
 
     FILE *words, *tips;
     set_file(&words, &tips);  // seta os ponteiros dos arquivos
@@ -92,7 +94,7 @@ int main () {
         // drawing
         BeginDrawing();
         ClearBackground(BLACK);
-        drawKeyboard(keyboard, target);  // desenha o teclado
+        drawKeyboard(keyboard, keys, target);  // desenha o teclado
         if (up_life == true){
             DrawUpLife(str_cura, &up_life, &opacidade1, &scroll1, &cura); // animação de cura
         }
