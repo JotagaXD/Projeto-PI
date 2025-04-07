@@ -2,36 +2,11 @@
 #include <raylib.h>
 #include "draw.h"
 
-void drawKeyboard(Vector2 *keyboard, int target) {
+void drawKeyboard(Vector2 *keyboard, Texture2D *keys, int target) {
     for (int i = 0; i < 26; i++){
         if (i != target){
             DrawRectangle(keyboard[i].x, keyboard[i].y, 70, 70, WHITE);
-            if (i == 0) DrawText("Q", keyboard[i].x + 25, keyboard[i].y + 25, 30, BLACK);
-            else if (i == 1) DrawText("W", keyboard[i].x + 25, keyboard[i].y + 25, 30, BLACK);
-            else if (i == 2) DrawText("E", keyboard[i].x + 25, keyboard[i].y + 25, 30, BLACK);
-            else if (i == 3) DrawText("R", keyboard[i].x + 25, keyboard[i].y + 25, 30, BLACK);
-            else if (i == 4) DrawText("T", keyboard[i].x + 25, keyboard[i].y + 25, 30, BLACK);
-            else if (i == 5) DrawText("Y", keyboard[i].x + 25, keyboard[i].y + 25, 30, BLACK);
-            else if (i == 6) DrawText("U", keyboard[i].x + 25, keyboard[i].y + 25, 30, BLACK);
-            else if (i == 7) DrawText("I", keyboard[i].x + 25, keyboard[i].y + 25, 30, BLACK);
-            else if (i == 8) DrawText("O", keyboard[i].x + 25, keyboard[i].y + 25, 30, BLACK);
-            else if (i == 9) DrawText("P", keyboard[i].x + 25, keyboard[i].y + 25, 30, BLACK);
-            else if (i == 10) DrawText("A", keyboard[i].x + 25, keyboard[i].y + 25, 30, BLACK);
-            else if (i == 11) DrawText("S", keyboard[i].x + 25, keyboard[i].y + 25, 30, BLACK);
-            else if (i == 12) DrawText("D", keyboard[i].x + 25, keyboard[i].y + 25, 30, BLACK);
-            else if (i == 13) DrawText("F", keyboard[i].x + 25, keyboard[i].y + 25, 30, BLACK);
-            else if (i == 14) DrawText("G", keyboard[i].x + 25, keyboard[i].y + 25, 30, BLACK);
-            else if (i == 15) DrawText("H", keyboard[i].x + 25, keyboard[i].y + 25, 30, BLACK);
-            else if (i == 16) DrawText("J", keyboard[i].x + 25, keyboard[i].y + 25, 30, BLACK);
-            else if (i == 17) DrawText("K", keyboard[i].x + 25, keyboard[i].y + 25, 30, BLACK);
-            else if (i == 18) DrawText("L", keyboard[i].x + 25, keyboard[i].y + 25, 30, BLACK);
-            else if (i == 19) DrawText("Z", keyboard[i].x + 25, keyboard[i].y + 25, 30, BLACK);
-            else if (i == 20) DrawText("X", keyboard[i].x + 25, keyboard[i].y + 25, 30, BLACK);
-            else if (i == 21) DrawText("C", keyboard[i].x + 25, keyboard[i].y + 25, 30, BLACK);
-            else if (i == 22) DrawText("V", keyboard[i].x + 25, keyboard[i].y + 25, 30, BLACK);
-            else if (i == 23) DrawText("B", keyboard[i].x + 25, keyboard[i].y + 25, 30, BLACK);
-            else if (i == 24) DrawText("N", keyboard[i].x + 25, keyboard[i].y + 25, 30, BLACK);
-            else if (i == 25) DrawText("M", keyboard[i].x + 25, keyboard[i].y + 25, 30, BLACK);
+            DrawTexture(keys[i], keyboard[i].x, keyboard[i].y, WHITE);
         } else {
             Color random = {GetRandomValue(0, 255), GetRandomValue(0, 255), GetRandomValue(0, 255), 255};
             
