@@ -15,8 +15,8 @@ void set_keyboard(Vector2 *keyboard) {
 }
 
 void set_file(FILE **words, FILE **tips) {
-    words[0] = fopen("D:\\Users\\jhmg\\Desktop\\joguin\\words.txt", "r");
-    tips[0] = fopen("D:\\Users\\jhmg\\Desktop\\joguin\\tips.txt", "r");
+    words[0] = fopen("C:\\raylib\\raylib\\examples\\core\\words.txt", "r");
+    tips[0] = fopen("C:\\raylib\\raylib\\examples\\core\\tips.txt", "r");
 }
 
 char **set_word() {
@@ -33,4 +33,15 @@ char **set_word() {
         exit(1);
     }
     return aux;
+}
+
+void set_keys(Texture2D keys[26]){
+    char nome[64];
+    for (int i = 0; i < 26; i++){
+        sprintf(nome,"C:\\raylib\\raylib\\examples\core\\sprites_key\\%csemfundo.png", 'A' + 1);
+        keys[i] = LoadTexture(nome);
+        if (keys[i].id == 0) {
+            printf("Deu erro");
+        }
+    }
 }
