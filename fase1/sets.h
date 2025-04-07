@@ -7,5 +7,6 @@
 void set_keyboard(Vector2 *keyboard);
 void set_file(FILE **words, FILE **tips);
 char **set_word();
+void set_keys(Texture2D *keys);
 
 #endif
