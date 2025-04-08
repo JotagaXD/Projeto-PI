@@ -13,12 +13,25 @@ typedef struct
     int velocidade_ataque;
     int ataque;
     int cooldown_atk;
+    float angulo_espiral;
+    int padrao_atual;
 } Boss;
+
+typedef struct
+{
+    Rectangle area;
+    Vector2 velocidade;
+    bool ativo;
+    float angulo;
+} Projetil;
+
+#define MAX_PROJETEIS 50
 
 void initBoss(Boss *boss, int vida, int velocidade_ataque, int ataque, int cooldown_atk);
 void drawBoss(Boss *boss, int x, int y);
-void updateBossAttack(Boss *boss, Rectangle *area_tiro);
-void updateBoss(Boss *boss, int dano, Rectangle area_boss, Rectangle *area_tiro, Rectangle area_ataque_inimigo, int *cooldown_atk);
+void gerarPadraoAtaque(Boss *boss, Projetil projeteis[], int padrao);
+void atualizarProjeteis(Boss *boss, Projetil projeteis[]);
+void updateBoss(Boss *boss, int dano, Rectangle area_boss, Projetil projeteis[], Rectangle area_ataque_inimigo, int *cooldown_atk, int acertou_palavra, int dano_ataque);
 
 #include "boss.c"
 #endif
