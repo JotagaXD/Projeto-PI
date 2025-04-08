@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include "sets.c"
 
-void set_file(FILE **words);
-char *set_word();
+char **read_words(char *arquivo, int *word_count);
+StringActions *define_words(StringActions* head, int *num_Ammo, char **words);
 
 #endif

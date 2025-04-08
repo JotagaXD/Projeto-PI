@@ -23,7 +23,7 @@ escada
 floresta
 girassol
 horizonte
-incêndio
+incendio
 jornal
 ketchup
 lanterna
@@ -89,4 +89,4 @@ vela
 webcam
 xilofone
 youtuber
-zumbido
+manke

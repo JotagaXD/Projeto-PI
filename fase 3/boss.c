@@ -1,23 +1,11 @@
-#include "raylib.h"
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include <time.h>
+#include "boss.h"
 
-typedef struct
-{
-    int vida;
-    int velocidade_ataque;
-    int ataque;
-    int tempo_ataque;
-} Boss;
-
-void initBoss(Boss *boss, int vida, int velocidade_ataque, int ataque, int tempo_ataque) // Inicializar Boss(Chamar função apenas 1 vez)
+void initBoss(Boss *boss, int vida, int velocidade_ataque, int ataque, int cooldown_atk) // Inicializar Boss(Chamar função apenas 1 vez)
 {
     boss->vida = vida;
     boss->velocidade_ataque = velocidade_ataque;
     boss->ataque = ataque;
-    boss->tempo_ataque = tempo_ataque;
+    boss->cooldown_atk = cooldown_atk;
 }
 
 void drawBoss(Boss *boss, int x, int y) // Desenhar boss
@@ -41,7 +29,7 @@ void updateBossAttack(Boss *boss, Rectangle *area_tiro)
     DrawRectangle(area_tiro->x, area_tiro->y, area_tiro->width, area_tiro->height, BLUE);
 }
 
-void updateBoss(Boss *boss, int dano, Rectangle area_boss, Rectangle *area_tiro, Rectangle area_ataque_inimigo, int *tempo_ataque) // Atualizar boss
+void updateBoss(Boss *boss, int dano, Rectangle area_boss, Rectangle *area_tiro, Rectangle area_ataque_inimigo, int *cooldown_atk) // Atualizar boss
 {
     drawBoss(boss, area_boss.x, area_boss.y);
 
@@ -52,17 +40,17 @@ void updateBoss(Boss *boss, int dano, Rectangle area_boss, Rectangle *area_tiro,
             boss->vida = 0;
     }
 
-    if (*tempo_ataque == boss->tempo_ataque) // Verifica se o tempo de ataque do boss chegou
+    if (*cooldown_atk == boss->cooldown_atk) // Verifica se o tempo de ataque do boss chegou
     {
         // Atira
         area_tiro->x = area_boss.x;
         area_tiro->y = area_boss.y + area_boss.height / 2 - area_tiro->height / 2;
-        *tempo_ataque = 0;
+        *cooldown_atk = 0;
     }
     else
     {
         // Espera
-        (*tempo_ataque)++;
+        (*cooldown_atk)++;
     }
 
     // Atualiza posição do tiro se estiver ativo
