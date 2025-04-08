@@ -10,7 +10,7 @@ typedef struct {
     float vel;
 }Player;
 
-void UpdatePlayer(Player *player, Rectangle *textbox, char *action_string, float dt);
+void UpdatePlayer(Player *player, float dt);
 void DrawPlayer(Player player);
 void UpdateCameraPlayerBoundsPush(Camera2D *camera, Player *player, Rectangle *textbox, float delta, int width, int height);
 
