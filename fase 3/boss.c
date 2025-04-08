@@ -20,42 +20,70 @@ void drawBoss(Boss *boss, int x, int y) // Desenhar boss
     DrawText(TextFormat("Ataque: %d", boss->ataque), x, y - 10, 10, WHITE);
 }
 
-void updateBossAttack(Boss *boss, Rectangle *area_tiro)
+void updateBossAttack(Boss *boss, Rectangle *tiros, int quantidade_tiros)
 {
-    // Move o tiro para a esquerda
-    area_tiro->x -= boss->velocidade_ataque;
+    for (int i = 0; i < quantidade_tiros; i++)
+    {
+        // Move o tiro para baixo
+        tiros[i].y += boss->velocidade_ataque;
 
-    // Desenha o novo tiro
-    DrawRectangle(area_tiro->x, area_tiro->y, area_tiro->width, area_tiro->height, BLUE);
+        // Desenha o tiro
+        if (tiros[i].y > 0 && tiros[i].y < GetScreenHeight())
+        {
+            DrawRectangle(tiros[i].x, tiros[i].y, tiros[i].width, tiros[i].height, BLUE);
+        }
+    }
 }
 
-void updateBoss(Boss *boss, int dano, Rectangle area_boss, Rectangle *area_tiro, Rectangle area_ataque_inimigo, int *cooldown_atk) // Atualizar boss
+void updateBoss(Boss *boss, int dano, Rectangle area_boss, Rectangle *tiros, Rectangle area_ataque_inimigo, int *cooldown_atk, int acertou_palavra, int dano_ataque) // Atualizar boss
 {
     drawBoss(boss, area_boss.x, area_boss.y);
 
-    if (CheckCollisionRecs(area_boss, area_ataque_inimigo)) // Checa se o Boss foi atingidp
+    // Verificar se acertou a palavra
+    if (acertou_palavra == 1)
+    {
+        boss->vida -= dano_ataque;
+        if (boss->vida < 0)
+            boss->vida = 0;
+    }
+
+    // Verifica colisão com o ataque do inimigo
+    if (CheckCollisionRecs(area_boss, area_ataque_inimigo)) // Checa se o Boss foi atingido
     {
         boss->vida -= dano;
         if (boss->vida < 0)
             boss->vida = 0;
     }
 
+    // Determina quantidade de tiros com base na vida do boss
+    int quantidade_tiros = 0;
+    if (boss->vida > 70 && boss->vida <= 100)
+    {
+        quantidade_tiros = 15;
+    }
+    else if (boss->vida > 40 && boss->vida <= 70)
+    {
+        quantidade_tiros = 25;
+    }
+    else if (boss->vida > 0 && boss->vida <= 40)
+    {
+        quantidade_tiros = 35;
+    }
+
     if (*cooldown_atk == boss->cooldown_atk) // Verifica se o tempo de ataque do boss chegou
     {
-        // Atira
-        area_tiro->x = area_boss.x;
-        area_tiro->y = area_boss.y + area_boss.height / 2 - area_tiro->height / 2;
+        // Gera tiros aleatórios a partir do topo da tela
+        for (int i = 0; i < quantidade_tiros; i++)
+        {
+            tiros[i].x = GetRandomValue(0, GetScreenWidth() - tiros[i].width);
+            tiros[i].y = 0;
+        }
         *cooldown_atk = 0;
     }
     else
     {
-        // Espera
         (*cooldown_atk)++;
     }
 
-    // Atualiza posição do tiro se estiver ativo
-    if (area_tiro->x + area_tiro->width > 0)
-    {
-        updateBossAttack(boss, area_tiro);
-    }
+    updateBossAttack(boss, tiros, quantidade_tiros);
 }
