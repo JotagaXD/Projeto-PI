@@ -3,7 +3,7 @@
 #define MAX_INPUT_CHARS    25
 #define PLAYER_H_SPEED 5
 
-bool fase2 (int *init) {
+ int fase2 (int *init) {
     int screenWidth = 1920, screenHeight = 1080;
     InitWindow(screenWidth, screenHeight, "Test");
 
@@ -13,7 +13,7 @@ bool fase2 (int *init) {
     char temp_string[30];
     
     //organizar o arquivo de palavras
-    char *arquivo = "words.txt";
+    char *arquivo = "strings/words.txt";
     int word_count = 0;
     char **words = read_words(arquivo, &word_count);
     
@@ -54,7 +54,7 @@ bool fase2 (int *init) {
     int acertou_palavra = 0;
     int string_size;
 
-    while(!WindowShouldClose() && player.vida >= 0 && boss.vida >= 0) {
+    while(!WindowShouldClose() && player.vida > 0 && boss.vida > 0) {
         float dt = GetFrameTime();
 
         string_size = strlen(head->string);
@@ -95,22 +95,10 @@ bool fase2 (int *init) {
         EndDrawing();
     }
     *init = 0;
-    if (boss.vida == 0){
-        Texture2D win_screen = LoadTexture("sprites/win_screen.png");
-        while (IsKeyPressed(KEY_M) == 0){
-            BeginDrawing();
-            DrawTexture(win_screen, 0, 0, WHITE);
-            EndDrawing();
-        }
-        return true;
-    } else if (player.vida == 0){
-        Texture2D default_screen = LoadTexture("sprites/default_screen.png");
-        while (IsKeyPressed(KEY_M) == 0){
-            BeginDrawing();
-            DrawTexture(default_screen, 0, 0, WHITE);
-            EndDrawing();
-        }
-        return false;
+    if (boss.vida <= 0) {
+        wins();
+    } else if (player.vida <= 0) {
+        defeat();
     }
-    return false;
+    return 0;
 }

@@ -17,7 +17,6 @@
 void menu(int *init, int *state) {
 
     Texture2D background = LoadTexture("sprites/background.png");
-
     int currentScreen = 0;
 
     // Define botões

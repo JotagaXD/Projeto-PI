@@ -1,6 +1,12 @@
 #include "fase1.h"
 
-bool fase1(int *init) {
+int fase1(int *init, int state) {
+    
+    if (state == 3){
+        lore();
+    }
+    
+    instruction1();
 
     Vector2 keyboard[26];
     set_keyboard(keyboard);  // define as posições de cada tecla do teclado na interface do jogo
@@ -61,22 +67,12 @@ bool fase1(int *init) {
         DrawText("TIMER", 1698, 144, 30, WHITE);
         EndDrawing();
     }
-    if (end == true){
-        Texture2D win_screen = LoadTexture("sprites/win_screen.png");
-        while (IsKeyPressed(KEY_M) == 0){
-            BeginDrawing();
-            DrawTexture(win_screen, 0, 0, WHITE);
-            EndDrawing();
-        }
-        return true;
-    } else if (life == 0){
-        Texture2D default_screen = LoadTexture("sprites/default_screen.png");
-        while (IsKeyPressed(KEY_M) == 0){
-            BeginDrawing();
-            DrawTexture(default_screen, 0, 0, WHITE);
-            EndDrawing();
-        }
-        return false;
+    *init = 0;
+    if (end == true) {
+        wins();
     }
-    return false;
+    else if (timer3 == 120) {
+        defeat();
+    }
+    return 0;
 }

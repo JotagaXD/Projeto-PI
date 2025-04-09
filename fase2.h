@@ -10,8 +10,9 @@
 #include "string_func.h"
 #include "sets.h"
 #include "boss.h"
+#include "screens.h"
 
-bool fase2(int *init);
+int fase2(int *init);
 
 #include "fase2.c"
 

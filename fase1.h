@@ -11,8 +11,10 @@
 #include "draw.h"
 #include "update.h"
 #include "tasks.h"
+#include "screens.h"
+
 #include "fase1.c"
 
-bool fase1(int *init);
+int fase1(int *init, int state);
 
 #endif

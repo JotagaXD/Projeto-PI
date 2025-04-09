@@ -28,15 +28,15 @@ int main () {
             switch (state)
             {
             case 1:
-                win = fase1(&init);
+                fase1(&init, state);
                 break;
             case 2:
-                win = fase2(&init);
+                fase2(&init);
                 break;
             case 3:
-                win = fase1(&init);
+                fase1(&init, state);
                 if (win){
-                    win = fase2(&init);
+                    fase2(&init);
                 }
                 break;
             default:
