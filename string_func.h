@@ -3,6 +3,7 @@
 
 #include "stdio.h"
 #include "stdlib.h"
+#include <string.h>
 #include "raylib.h"
 #include "player.h"
 
@@ -22,7 +23,7 @@ StringActions* createStringActions(char* string);
 StringActions* insertAtBeginning(StringActions* head, char* string);
 StringActions* insertAtEnd(StringActions* head, char* string, int* Num_ammo);
 StringActions* deleteStringActions(StringActions* head, int* Num_ammo);
-void UpdateTextbox(StringActions **head, char *action_string, Player *player, int *Num_ammo);
+void UpdateTextbox(StringActions **head, char *action_string, char *temp_string, Player *player, int *Num_ammo, int *acertou_palavra);
 void DrawList(StringActions* head, int size, EnvItem* envItems); 
 
 #include "string_func.c"

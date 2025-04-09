@@ -40,7 +40,7 @@ StringActions* deleteStringActions(StringActions* head, int* Num_ammo) {
     return head;
 }
 
-void UpdateTextbox(StringActions **head, char *action_string, Player *player, int *Num_ammo)
+void UpdateTextbox(StringActions **head, char *action_string, char *temp_string, Player *player, int *Num_ammo, int *acertou_palavra)
 {
     int key = GetCharPressed();
 
@@ -66,11 +66,12 @@ void UpdateTextbox(StringActions **head, char *action_string, Player *player, in
     }
 
     if (strcmp(action_string, (*head)->string) == 0) {
+        temp_string = strcpy(temp_string, (*head)->string);
+        (*acertou_palavra) = 1;
         (*head) = deleteStringActions((*head), Num_ammo);
         player->index_cursor = -1;
         action_string[0] = '\0';
     }
-
 }
 
 void DrawList(StringActions* head, int size, EnvItem* envItems) {

@@ -3,7 +3,8 @@
 Player CreatePlayer(int screenWidth, int screenHeight) {
     Player player;
     player.posicao.x = screenWidth/2; player.posicao.y = screenHeight/2;
-    player.vida = 0; player.index_cursor = -1;
+    player.posicao.height = 40; player.posicao.width = 40;
+    player.vida = 100; player.index_cursor = -1;
     return player;
 }
 
@@ -12,6 +13,15 @@ void UpdatePlayer(Player *player, Rectangle *textbox, StringActions *head, float
     if (IsKeyDown(KEY_LEFT)) player->posicao.x -= 400*dt;
     if (IsKeyDown(KEY_DOWN)) player->posicao.y += 400*dt;
     if (IsKeyDown(KEY_UP)) player->posicao.y -= 400*dt;
+
+    if (player->posicao.y < 0)
+        player->posicao.y = 0;
+    if (player->posicao.y > 1080 - 40)
+        player->posicao.y = 1080 - 40;
+    if (player->posicao.x < 0)
+        player->posicao.x = 0;
+    if (player->posicao.x > 1920 - 40)
+        player->posicao.x = 1920 - 40;
 
     int word_size = MeasureText(head->string, 30);
     int word_lenght = strlen(head->string);
@@ -38,7 +48,38 @@ void UpdatePlayer(Player *player, Rectangle *textbox, StringActions *head, float
     
 }   
 
+void DamagePlayer(Player *player, Projetil *projeteis, int *invincibility) {
+    if (*invincibility <= 0)
+        {
+            for (int i = 0; i < 50; i++) //MAX PROJETEIS
+            {
+                if (projeteis[i].ativo && CheckCollisionRecs(player->posicao, projeteis[i].area))
+                {
+                    player->vida -= 10;
+                    (*invincibility) = 120; // 2 segundos de invencibilidade
+                    projeteis[i].ativo = false;
+                    break;
+                }
+            }
+        }
+    else
+    {
+        (*invincibility)--;
+    }
+}
+
 void DrawPlayer(Player player) {
     Rectangle playerRect = {player.posicao.x - 20, player.posicao.y - 40, 40.0f, 40.0f };
     DrawRectangleRec(playerRect, RED);
+}
+
+void TempStringUpdt(Color *temp_yellow, Rectangle *temp_string_rect, bool *yellow_done) {
+    if (*yellow_done == true) {
+        temp_string_rect->y -= 1;
+        temp_yellow->a -= 5;
+        if (temp_yellow->a == 0) {
+            (*yellow_done) = false;
+            temp_yellow->a = 255;
+        }
+    }
 }

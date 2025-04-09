@@ -1,88 +1,80 @@
-#include <raylib.h>
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
-#include <time.h>
 
-typedef enum GameScreen { MENU = 0, FASE1, FASE2, JOGO_COMPLETO, CREDITOS } GameScreen;
+#include "raylib.h"
+#include "player.h"
+#include "string_func.h"
+#include "sets_f2.h"
+#include "boss.h"
 
-int main(){
-    const int screenWidth = 800;
-    const int screenHeight = 600;
+#define SCREEN_WIDTH 1920
+#define SCREEN_HEIGHT 1080
+#define BUTTON_WIDTH 200
+#define BUTTON_HEIGHT 50
+#define BUTTON_SPACING 20
 
-    InitWindow(screenWidth, screenHeight, "Menu");
+void menu(int *init, int *state) {
 
-    GameScreen currentScreen = MENU;
+    Texture2D background = LoadTexture("sprites/background.png");
 
-    SetTargetFPS(60);
+    int currentScreen = 0;
 
-    while (!WindowShouldClose())
-    {
-        if (currentScreen == MENU)
-        {
-            Vector2 mousePoint = GetMousePosition();
-            Rectangle botaofasetoupeira = { screenWidth/2 - 100, 150, 200, 50 };
-            Rectangle botaofaseboss = { screenWidth/2 - 100, 220, 200, 50 };
-            Rectangle botaojogocompleto = { screenWidth/2 - 100, 290, 200, 50 };
-            Rectangle botaocreditos = { screenWidth/2 - 100, 360, 200, 50 };
-            if (CheckCollisionPointRec(mousePoint, botaofasetoupeira) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
-                currentScreen = FASE1;
-            else if (CheckCollisionPointRec(mousePoint, botaofaseboss) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
-                currentScreen = FASE2;
-            else if (CheckCollisionPointRec(mousePoint, botaojogocompleto) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
-                currentScreen = JOGO_COMPLETO;
-            else if (CheckCollisionPointRec(mousePoint, botaocreditos) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
-                currentScreen = CREDITOS;
-        }
+    // Define botões
+    Rectangle buttons[4];
+    for (int i = 0; i < 4; i++) {
+        buttons[i].width = BUTTON_WIDTH;
+        buttons[i].height = BUTTON_HEIGHT;
+        buttons[i].x = (SCREEN_WIDTH - BUTTON_WIDTH) / 2;
+        buttons[i].y = 300 + i * (BUTTON_HEIGHT + BUTTON_SPACING);
+    }
+
+    const char *buttonLabels[4] = {
+        "Fase 1", "Fase 2", "Jogo Completo", "Créditos"
+    };
+        
+    while (!WindowShouldClose() && *init == 0) {
+        Vector2 mouse = GetMousePosition();
 
         BeginDrawing();
         ClearBackground(RAYWHITE);
 
-        switch (currentScreen)
-        {
-            case MENU:
-                DrawText("MAIN MENU", screenWidth/2 - MeasureText("MAIN MENU", 20)/2, 80, 20, DARKGRAY);
-                DrawRectangle(screenWidth/2 - 100, 150, 200, 50, LIGHTGRAY);
-                DrawText("Fase 1 - Toupeira", screenWidth/2 - MeasureText("Fase 1 - Toupeira", 20)/2, 165, 20, BLACK);
+        DrawTexture(background, 0, 0, WHITE);
 
-                DrawRectangle(screenWidth/2 - 100, 220, 200, 50, LIGHTGRAY);
-                DrawText("Fase 2 - Boss", screenWidth/2 - MeasureText("Fase 2 - Boss", 20)/2, 235, 20, BLACK);
+        if (currentScreen == 0) {
+            for (int i = 0; i < 4; i++) {
+                Color btnColor = CheckCollisionPointRec(mouse, buttons[i]) ? DARKGRAY : GRAY;
+                DrawRectangleRec(buttons[i], btnColor);
 
-                DrawRectangle(screenWidth/2 - 100, 290, 200, 50, LIGHTGRAY);
-                DrawText("Jogo Completo", screenWidth/2 - MeasureText("Jogo Completo", 20)/2, 305, 20, BLACK);
+                // Centralizar texto nos botões
+                int textWidth = MeasureText(buttonLabels[i], 20);
+                DrawText(buttonLabels[i],
+                         buttons[i].x + (BUTTON_WIDTH - textWidth) / 2,
+                         buttons[i].y + 15,
+                         20, BLACK);
 
-                DrawRectangle(screenWidth/2 - 100, 360, 200, 50, LIGHTGRAY);
-                DrawText("Créditos", screenWidth/2 - MeasureText("Créditos", 20)/2, 375, 20, BLACK);
-                break;
+                // Clique
+                if (CheckCollisionPointRec(mouse, buttons[i]) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                    currentScreen = (i + 1);
+                }
+            }
+        } else {
+            switch (currentScreen) {
+                case 1: *init = 1; *state = 1; break;
+                case 2: *init = 1; *state = 2; break;
+                case 3: DrawText("Você escolheu o Jogo Completo", 200, 300, 30, BLACK); break;
+                case 4:  DrawText("Créditos: Arte gerada por IA", 200, 300, 30, BLACK); break;
+                default: break;
+            }
+            
+            DrawText("Pressione ESC para voltar ao menu", 200, 340, 20, DARKGRAY);
 
-            case FASE1:
-                DrawText("FASE 1 - Jogo toupeira...", 200, 280, 20, DARKBLUE);
-                DrawText("Pressione ESC para voltar ao menu", 200, 320, 16, GRAY);
-                if (IsKeyPressed(KEY_ESCAPE)) currentScreen = MENU;
-                break;
-
-            case FASE2:
-                DrawText("FASE 2 - Boss...", 200, 280, 20, DARKGREEN);
-                DrawText("Pressione ESC para voltar ao menu", 200, 320, 16, GRAY);
-                if (IsKeyPressed(KEY_ESCAPE)) currentScreen = MENU;
-                break;
-
-            case JOGO_COMPLETO:
-                DrawText("JOGO COMPLETO: Fase toupeira...", 200, 240, 20, DARKBLUE);
-                DrawText("Fase boss...", 200, 280, 20, DARKGREEN);
-                DrawText("Pressione ESC para voltar ao menu", 200, 320, 16, GRAY);
-                if (IsKeyPressed(KEY_ESCAPE)) currentScreen = MENU;
-                break;
-
-            case CREDITOS:
-                DrawText("Créditos:", 200, 240, 20, DARKGRAY);
-                DrawText("Desenvolvido por grupo1 de pi", 200, 280, 20, BLACK);
-                DrawText("Pressione ESC para voltar ao menu", 200, 320, 16, GRAY);
-                if (IsKeyPressed(KEY_ESCAPE)) currentScreen = MENU;
-                break;
+            if (IsKeyPressed(KEY_ESCAPE)) {
+                currentScreen = 0;
+            }
         }
         EndDrawing();
     }
-    CloseWindow();
-    return 0;
+
+    UnloadTexture(background);
 }

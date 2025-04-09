@@ -22,8 +22,8 @@ void drawBoss(Boss *boss, int x, int y)
         return;
     }
     DrawRectangle(x, y, 50, 50, RED);
-    DrawText(TextFormat("Vida: %d", boss->vida), x, y - 20, 10, WHITE);
-    DrawText(TextFormat("Ataque: %d", boss->ataque), x, y - 10, 10, WHITE);
+    DrawText(TextFormat("Vida: %d", boss->vida), x, y - 20, 10, BLACK);
+    DrawText(TextFormat("Ataque: %d", boss->ataque), x, y - 10, 10, BLACK);
 }
 
 void gerarPadraoAtaque(Boss *boss, Projetil projeteis[], int padrao)
@@ -68,6 +68,23 @@ void gerarPadraoAtaque(Boss *boss, Projetil projeteis[], int padrao)
             projeteis[i].area = (Rectangle){
                 screenWidth / 2,
                 10,
+                12, 12};
+
+            // Velocidade baseada no ângulo para criar efeito espiral
+            projeteis[i].velocidade = (Vector2){
+                4 * cosf(angulo),
+                4 * sinf(angulo)};
+            projeteis[i].angulo = angulo;
+        }
+
+        for (int i = 25; i < 50; i++)
+        {
+            float angulo = anguloBase + i * (2 * PI / 12);
+
+            projeteis[i].ativo = true;
+            projeteis[i].area = (Rectangle){
+                screenWidth,
+                screenHeight/2,
                 12, 12};
 
             // Velocidade baseada no ângulo para criar efeito espiral
@@ -149,8 +166,8 @@ void atualizarProjeteis(Boss *boss, Projetil projeteis[])
             break;
 
         case 1: // Padrão Espiral
-            projeteis[i].velocidade.x *= 1.01f;
-            projeteis[i].velocidade.y *= 1.01f;
+            projeteis[i].velocidade.x *= 1.02f;
+            projeteis[i].velocidade.y *= 1.02f;
             break;
 
         case 2: // Padrão convergente
@@ -198,11 +215,9 @@ void atualizarProjeteis(Boss *boss, Projetil projeteis[])
     }
 }
 
-void updateBoss(Boss *boss, int dano, Rectangle area_boss, Projetil projeteis[], Rectangle area_ataque_inimigo, int *cooldown_atk, int acertou_palavra, int dano_ataque)
+void updateBoss(Boss *boss, int dano, Rectangle area_boss, Projetil projeteis[], int *cooldown_atk, int *acertou_palavra, int dano_ataque)
 {
     // Atualiza o padrão baseado na vida atual do boss
-    int padrao_anterior = boss->padrao_atual;
-
     if (boss->vida > 70)
         boss->padrao_atual = 0;
     else if (boss->vida > 40)
@@ -213,11 +228,12 @@ void updateBoss(Boss *boss, int dano, Rectangle area_boss, Projetil projeteis[],
     drawBoss(boss, area_boss.x, area_boss.y);
 
     // Verificar se acertou a palavra
-    if (acertou_palavra == 1)
+    if (*acertou_palavra == 1)
     {
         boss->vida -= dano_ataque;
         if (boss->vida < 0)
             boss->vida = 0;
+        (*acertou_palavra) = 0;
     }
 
     if (*cooldown_atk >= boss->cooldown_atk)

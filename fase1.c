@@ -1,15 +1,6 @@
-#include <raylib.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include "fase1.h"
 
-#include "sets.h"
-#include "gets.h"
-#include "draw.h"
-#include "update.h"
-#include "tasks.h"
-
-int main () {
+bool fase1(int *init) {
 
     Vector2 keyboard[26];
     set_keyboard(keyboard);  // define as posições de cada tecla do teclado na interface do jogo
@@ -24,13 +15,9 @@ int main () {
     char **word = set_word(), str_life[4], str_dano[4], str_cura[4], str_timer[8], str_timer_past[8], str_tips[100];
     
     bool end = false, read = true, up_life = false, down_life = false, down_time = false, change = false;
-    
-    InitWindow(1920, 1080, "My first RAYLIB program!");
 
     set_keys(keys);
     mole = LoadTexture("sprites\\sprites_toupeira\\toupeirafinal.png");
-
-    SetTargetFPS(60);
 
     // game loop
     while (WindowShouldClose() == false && end == false && timer3 < 120){
@@ -74,6 +61,9 @@ int main () {
         DrawText("TIMER", 1698, 144, 30, WHITE);
         EndDrawing();
     }
-    CloseWindow();
-    return 0;
+    *init = 0;
+    if (end == true) {
+        return true;
+    }
+    return false;
 }
