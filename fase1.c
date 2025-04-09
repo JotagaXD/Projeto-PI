@@ -61,9 +61,22 @@ bool fase1(int *init) {
         DrawText("TIMER", 1698, 144, 30, WHITE);
         EndDrawing();
     }
-    *init = 0;
-    if (end == true) {
+    if (end == true){
+        Texture2D win_screen = LoadTexture("sprites/win_screen.png");
+        while (IsKeyPressed(KEY_M) == 0){
+            BeginDrawing();
+            DrawTexture(win_screen, 0, 0, WHITE);
+            EndDrawing();
+        }
         return true;
+    } else if (life == 0){
+        Texture2D default_screen = LoadTexture("sprites/default_screen.png");
+        while (IsKeyPressed(KEY_M) == 0){
+            BeginDrawing();
+            DrawTexture(default_screen, 0, 0, WHITE);
+            EndDrawing();
+        }
+        return false;
     }
     return false;
 }
