@@ -23,6 +23,7 @@ escada
 floresta
 girassol
 horizonte
+incendio
 jornal
 ketchup
 lanterna
