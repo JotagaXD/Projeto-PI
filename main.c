@@ -16,11 +16,11 @@ int main () {
     int init = 0;
     int state = 0;
     bool win = 0;
-    
+
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "BLAU");
     SetTargetFPS(60);
-    
-    while(!WindowShouldClose()) {
+
+    while(!WindowShouldClose()) {   
         if (init == 0) {
             menu(&init, &state);
         }
@@ -46,6 +46,6 @@ int main () {
     }
 
     CloseWindow();
-    
+
     return 0;
 }

@@ -17,6 +17,7 @@
 void menu(int *init, int *state) {
 
     Texture2D background = LoadTexture("sprites/background.png");
+    Texture2D credits = LoadTexture("sprites/creditos.png");
     int currentScreen = 0;
 
     // Define botões
@@ -38,7 +39,7 @@ void menu(int *init, int *state) {
         BeginDrawing();
         ClearBackground(RAYWHITE);
 
-        DrawTexture(background, 0, 0, WHITE);
+        DrawTextureEx(background, (Vector2){0,0}, 0, 1.3, WHITE);
 
         if (currentScreen == 0) {
             for (int i = 0; i < 4; i++) {
@@ -62,13 +63,13 @@ void menu(int *init, int *state) {
                 case 1: *init = 1; *state = 1; break;
                 case 2: *init = 1; *state = 2; break;
                 case 3: *init = 1; *state = 3; break;
-                case 4:  DrawText("Créditos: Arte gerada por IA", 550, 100, 40, YELLOW); break;
+                case 4: DrawTexture(credits, 0, 0, WHITE); break;
                 default: break;
             }
             
-            DrawText("Pressione ESC para voltar ao menu", 200, 340, 20, DARKGRAY);
+            
 
-            if (IsKeyPressed(KEY_ESCAPE)) {
+            if (IsKeyPressed(KEY_M)) {
                 currentScreen = 0;
             }
         }

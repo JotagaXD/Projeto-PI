@@ -12,6 +12,12 @@ void initBoss(Boss *boss, int vida, int velocidade_ataque, int ataque, int coold
     boss->cooldown_atk = cooldown_atk;
     boss->angulo_espiral = 0;
     boss->padrao_atual = 0;
+    boss->contador_dano = 0;
+    
+    boss->textura_normal1 = LoadTexture("sprites/toupeira_boss1.png");
+    boss->textura_dano1 = LoadTexture("sprites/toupeira_boss1dano.png");
+    boss->textura_normal2 = LoadTexture("sprites/toupeira_boss2.png");
+    boss->textura_dano2 = LoadTexture("sprites/toupeira_boss2dano.png");
 }
 
 void drawBoss(Boss *boss, int x, int y)
@@ -21,7 +27,21 @@ void drawBoss(Boss *boss, int x, int y)
         DrawText("BOSS DERROTADO", x - 30, y - 20, 20, RED);
         return;
     }
-    DrawRectangle(x, y, 60, 60, BROWN);
+    
+    Texture2D textura_atual;
+    
+    if (boss->vida > 70) {
+        // Fase 1 do boss
+        textura_atual = (boss->contador_dano > 0) ? boss->textura_dano1 : boss->textura_normal1;
+    } else {
+        // Fase 2 do boss (vida abaixo de 40)
+        textura_atual = (boss->contador_dano > 0) ? boss->textura_dano2 : boss->textura_normal2;
+    }
+    
+    // Desenha o sprite do boss
+    DrawTextureEx(textura_atual,(Vector2) { x, y}, 0, 0.5, WHITE);
+    
+    // Desenha barra de vida
     DrawText(TextFormat("BOSS HP: %d/200", boss->vida), x - 300, 10, 40, BLACK);
 }
 
@@ -210,8 +230,8 @@ void atualizarProjeteis(Boss *boss, Projetil projeteis[])
             break;
 
         case 1: // Padrão Espiral
-            projeteis[i].velocidade.x *= 1.01f;
-            projeteis[i].velocidade.y *= 1.01f;
+            if (boss->vida < 100)projeteis[i].velocidade.x *= 1.03f; else projeteis[i].velocidade.x *= 1.01f;
+            if (boss->vida < 100)projeteis[i].velocidade.y *= 1.03f; else projeteis[i].velocidade.y *= 1.01f;
             break;
 
         case 2: // Padrão convergente
@@ -219,8 +239,6 @@ void atualizarProjeteis(Boss *boss, Projetil projeteis[])
             float centerY = screenHeight / 2;
             float dCentroX = centerX - projeteis[i].area.x;
             float dCentroY = centerY - projeteis[i].area.y;
-            float distCentro = sqrtf(dCentroX * dCentroX + dCentroY * dCentroY);
-
         }
 
         // Desenha o tiro
@@ -234,7 +252,7 @@ void atualizarProjeteis(Boss *boss, Projetil projeteis[])
             corProjetil = PURPLE;
             break;
         case 2:
-            corProjetil = RED;
+            corProjetil = WHITE;
             break;
         }
 
@@ -263,18 +281,32 @@ void updateBoss(Boss *boss, Rectangle area_boss, Projetil projeteis[], int *cool
         boss->padrao_atual = 2;
         boss->cooldown_atk = 240;
     }
-    drawBoss(boss, area_boss.x, area_boss.y);
-
+    
+    // Se o contador de dano estiver ativo, diminui
+    if (boss->contador_dano > 0) {
+        boss->contador_dano--;
+    }
+    
     // Verificar se acertou a palavra
     if (*acertou_palavra == 1)
     {
         boss->vida -= dano_ataque;
         if (boss->vida < 0)
             boss->vida = 0;
+            
+        // Ativa efeito visual de dano
+        boss->contador_dano = 15; // Duração da animação de dano (15 frames = 0.25 segundo a 60 FPS)
+        
         (*acertou_palavra) = 0;
     }
     
-    if (*cooldown_atk >= boss->cooldown_atk)
+    drawBoss(boss, area_boss.x, area_boss.y);
+    
+    if(*cooldown_atk >= boss->cooldown_atk/2 && boss->vida < 100) {
+        gerarPadraoAtaque(boss, projeteis, boss->padrao_atual);
+        *cooldown_atk = 0;
+    }
+    else if (*cooldown_atk >= boss->cooldown_atk)
     {
         gerarPadraoAtaque(boss, projeteis, boss->padrao_atual);
         *cooldown_atk = 0;

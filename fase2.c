@@ -6,6 +6,8 @@
  int fase2 (int *init) {
     int screenWidth = 1920, screenHeight = 1080;
     InitWindow(screenWidth, screenHeight, "Test");
+    Texture2D backgd = LoadTexture("sprites/background2.png");
+    Texture2D playerTex = LoadTexture("sprites/player.png");
 
     Color temp_yellow = { 253, 249, 0, 255 };
     bool yellow_done = false;
@@ -36,7 +38,7 @@
     Boss boss;
     initBoss(&boss, 200, 5, 10, 180); // vida, velocidade_ataque, ataque, cooldown_atk/3 = seg
     // Área do boss
-    Rectangle area_boss = {screenWidth - 100, screenHeight / 2 - 25, 50, 50};
+    Rectangle area_boss = {screenWidth - 300, screenHeight / 2 - 150, 50, 50};
     int cooldown_atk = 0;
 
     // Array de projéteis
@@ -65,12 +67,12 @@
         if (num_ammo == 5) {word_count = 0; words = read_words(arquivo, &word_count); head = define_words(head, &num_ammo, words);}
 
         UpdateTextbox(&head, action_string, temp_string, &player, &num_ammo, &acertou_palavra);
-        UpdatePlayer(&player, &textbox, head, dt);
         DamagePlayer(&player, projeteis, &invincibility);
         
         BeginDrawing();
-            ClearBackground(WHITE);
-            
+            DrawTextureEx(backgd, (Vector2){0,0}, 0, 1, WHITE);
+            UpdatePlayer(&player, &textbox, head, dt);
+
             if (acertou_palavra == 1) {
                 temp_string_rect = textbox;
                 yellow_done = true;
@@ -81,7 +83,7 @@
             
             if (invincibility <= 0 || (invincibility / 10) % 2 == 0)
             {
-                DrawPlayer(player);
+                DrawPlayer(player, playerTex);
             }
             
             updateBoss(&boss, area_boss, projeteis, &cooldown_atk, &acertou_palavra, dano_ataque_palavra);

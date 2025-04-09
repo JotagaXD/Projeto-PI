@@ -18,7 +18,7 @@ typedef struct Player{
 
 Player CreatePlayer(int screenWidth, int screenHeight);
 void UpdatePlayer(Player *player, Rectangle *textbox, StringActions *head, float dt);
-void DrawPlayer(Player player);
+void DrawPlayer(Player player, Texture2D playerTex);
 void DamagePlayer(Player *player, Projetil *projeteis, int *invincibility);
 void TempStringUpdt(Color *temp_yellow, Rectangle *temp_string_rect, bool *yellow_done);
 

@@ -7,6 +7,7 @@
 #include <string.h>
 #include <time.h>
 
+
 typedef struct
 {
     int vida;
@@ -15,6 +16,11 @@ typedef struct
     int cooldown_atk;
     float angulo_espiral;
     int padrao_atual;
+    int contador_dano;      
+    Texture2D textura_normal1; 
+    Texture2D textura_dano1;  
+    Texture2D textura_normal2; 
+    Texture2D textura_dano2; 
 } Boss;
 
 typedef struct

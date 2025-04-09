@@ -69,9 +69,11 @@ void DamagePlayer(Player *player, Projetil *projeteis, int *invincibility) {
     }
 }
 
-void DrawPlayer(Player player) {
+void DrawPlayer(Player player, Texture2D playerTex) {
+    Color invisible = {0, 0, 0, 0};
     Rectangle playerRect = {player.posicao.x - 20, player.posicao.y - 40, 40.0f, 40.0f };
-    DrawRectangleRec(playerRect, RED);
+    DrawRectangleRec(playerRect, invisible);
+    DrawTextureEx(playerTex, (Vector2) {player.posicao.x - 25,player.posicao.y - 60}, 0, 0.5, WHITE);
 }
 
 void TempStringUpdt(Color *temp_yellow, Rectangle *temp_string_rect, bool *yellow_done) {
