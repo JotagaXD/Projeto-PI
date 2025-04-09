@@ -13,7 +13,7 @@ bool fase2 (int *init) {
     char temp_string[30];
     
     //organizar o arquivo de palavras
-    char *arquivo = "strings/words.txt";
+    char *arquivo = "words.txt";
     int word_count = 0;
     char **words = read_words(arquivo, &word_count);
     
@@ -30,12 +30,14 @@ bool fase2 (int *init) {
     //seta o player
     Player player = CreatePlayer(screenWidth, screenHeight);
     int invincibility = 0; // Frames de invencibilidade após ser atingido
+    int dano_ataque_palavra;
 
     // Inicialização do boss
     Boss boss;
-    initBoss(&boss, 100, 5, 10, 180); // vida, velocidade_ataque, ataque, cooldown_atk
+    initBoss(&boss, 200, 5, 10, 180); // vida, velocidade_ataque, ataque, cooldown_atk/3 = seg
     // Área do boss
     Rectangle area_boss = {screenWidth - 100, screenHeight / 2 - 25, 50, 50};
+    int cooldown_atk = 0;
 
     // Array de projéteis
     Projetil projeteis[MAX_PROJETEIS];
@@ -49,13 +51,16 @@ bool fase2 (int *init) {
         envItems[i].rect.x = (screenWidth/2 - 375) + i*150; envItems[i].rect.y = screenHeight - 50; envItems[i].rect.width = 150; envItems[i].rect.height = 30; envItems[i].color = GRAY;
     }
 
-    int cooldown_atk = 0;
-    int dano_jogador = 5;
-    int dano_ataque_palavra = 10;
     int acertou_palavra = 0;
+    int string_size;
 
     while(!WindowShouldClose() && player.vida >= 0 && boss.vida >= 0) {
         float dt = GetFrameTime();
+
+        string_size = strlen(head->string);
+        if (string_size > 9) dano_ataque_palavra = string_size*3;
+        else if (string_size > 6) dano_ataque_palavra = string_size*2;
+        else dano_ataque_palavra = string_size;
 
         if (num_ammo == 5) {word_count = 0; words = read_words(arquivo, &word_count); head = define_words(head, &num_ammo, words);}
 
@@ -79,7 +84,7 @@ bool fase2 (int *init) {
                 DrawPlayer(player);
             }
             
-            updateBoss(&boss, dano_jogador, area_boss, projeteis, &cooldown_atk, &acertou_palavra, dano_ataque_palavra);
+            updateBoss(&boss, area_boss, projeteis, &cooldown_atk, &acertou_palavra, dano_ataque_palavra);
 
             for (int i = 0; i < 5; i++) { 
                 DrawRectangleRec(envItems[i].rect, envItems[i].color);
