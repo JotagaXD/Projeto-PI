@@ -95,10 +95,22 @@ bool fase2 (int *init) {
         EndDrawing();
     }
     *init = 0;
-    if (player.vida <= 0) {
-        return 0;
+    if (boss.vida == 0){
+        Texture2D win_screen = LoadTexture("sprites/win_screen.png");
+        while (IsKeyPressed(KEY_M) == 0){
+            BeginDrawing();
+            DrawTexture(win_screen, 0, 0, WHITE);
+            EndDrawing();
+        }
+        return true;
+    } else if (player.vida == 0){
+        Texture2D default_screen = LoadTexture("sprites/default_screen.png");
+        while (IsKeyPressed(KEY_M) == 0){
+            BeginDrawing();
+            DrawTexture(default_screen, 0, 0, WHITE);
+            EndDrawing();
+        }
+        return false;
     }
-    else if (boss.vida <= 0) {
-        return 1;
-    }
+    return false;
 }
