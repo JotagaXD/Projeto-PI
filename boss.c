@@ -18,17 +18,15 @@ void drawBoss(Boss *boss, int x, int y)
 {
     if (boss->vida <= 0)
     {
-        DrawText("BOSS DERROTADO", x, y - 20, 20, RED);
+        DrawText("BOSS DERROTADO", x - 30, y - 20, 20, RED);
         return;
     }
-    DrawRectangle(x, y, 50, 50, RED);
-    DrawText(TextFormat("Vida: %d", boss->vida), x, y - 20, 10, BLACK);
-    DrawText(TextFormat("Ataque: %d", boss->ataque), x, y - 10, 10, BLACK);
+    DrawRectangle(x, y, 60, 60, BROWN);
+    DrawText(TextFormat("BOSS HP: %d/200", boss->vida), x - 300, 10, 40, BLACK);
 }
 
 void gerarPadraoAtaque(Boss *boss, Projetil projeteis[], int padrao)
 {
-
     for (int i = 0; i < MAX_PROJETEIS; i++)
     {
         projeteis[i].ativo = false;
@@ -40,17 +38,14 @@ void gerarPadraoAtaque(Boss *boss, Projetil projeteis[], int padrao)
     switch (padrao)
     {
     case 0: // PADRÃO 1: Chuva
-    {
-        for (int i = 0; i < 15; i++)
+    {   
+        for (int i = 0; i < 25; i++)
         {
             projeteis[i].ativo = true;
-            projeteis[i].area = (Rectangle){
-                GetRandomValue(50, screenWidth - 50),
-                0,
-                15, 15};
+            projeteis[i].area = (Rectangle){GetRandomValue(50, screenWidth - 50),10, 15, 15};
             projeteis[i].velocidade = (Vector2){
                 GetRandomValue(-1, 1), // Pequena variação horizontal
-                GetRandomValue(3, 6)   // Velocidade vertical variável
+                GetRandomValue(6, 10)   // Velocidade vertical variável
             };
             projeteis[i].angulo = 0;
         }
@@ -60,15 +55,22 @@ void gerarPadraoAtaque(Boss *boss, Projetil projeteis[], int padrao)
     case 1: // PADRÃO 2: Espiral
     {
         float anguloBase = boss->angulo_espiral;
-        for (int i = 0; i < 25; i++)
+
+        int atack_patern = GetRandomValue(0,3);
+        
+        for (int i = 0; i < 30; i++)
         {
-            float angulo = anguloBase + i * (2 * PI / 12);
+            float angulo = anguloBase + i * (2 * PI / 24);
 
             projeteis[i].ativo = true;
-            projeteis[i].area = (Rectangle){
-                screenWidth / 2,
-                10,
-                12, 12};
+            switch (atack_patern)
+            {
+            case 0:projeteis[i].area = (Rectangle){screenWidth / 4,10,12,12}; break;
+            case 1:projeteis[i].area = (Rectangle){screenWidth*3/4,10,12,12}; break;
+            case 2:projeteis[i].area = (Rectangle){screenWidth / 4, screenHeight - 10,12,12}; break;
+            case 3:projeteis[i].area = (Rectangle){screenWidth*3/4, screenHeight - 10,12,12}; break;
+            default:break;
+            }
 
             // Velocidade baseada no ângulo para criar efeito espiral
             projeteis[i].velocidade = (Vector2){
@@ -77,15 +79,19 @@ void gerarPadraoAtaque(Boss *boss, Projetil projeteis[], int padrao)
             projeteis[i].angulo = angulo;
         }
 
-        for (int i = 25; i < 50; i++)
+        for (int i = 25; i < 60; i++)
         {
-            float angulo = anguloBase + i * (2 * PI / 12);
+            float angulo = anguloBase + i * (2 * PI / 24);
 
             projeteis[i].ativo = true;
-            projeteis[i].area = (Rectangle){
-                screenWidth,
-                screenHeight/2,
-                12, 12};
+            switch (atack_patern)
+            {
+            case 0:projeteis[i].area = (Rectangle){screenWidth,screenHeight*3/4,12,12}; break;
+            case 1:projeteis[i].area = (Rectangle){10,screenHeight*3/4,12,12}; break;
+            case 2:projeteis[i].area = (Rectangle){screenWidth, screenHeight/4,12,12}; break;
+            case 3:projeteis[i].area = (Rectangle){10,screenHeight /4,12,12}; break;
+            default:break;
+            }
 
             // Velocidade baseada no ângulo para criar efeito espiral
             projeteis[i].velocidade = (Vector2){
@@ -101,9 +107,13 @@ void gerarPadraoAtaque(Boss *boss, Projetil projeteis[], int padrao)
     }
 
     case 2: // PADRÃO 3: convergente
-    {
-        // Projéteis que convergem de todos os lados para o centro e depois divergem
-        for (int i = 0; i < 35; i++)
+    {   
+        int atack_patern = GetRandomValue(0,2);
+
+        switch (atack_patern)
+        {
+        case 0:// Projéteis que convergem de todos os lados para o centro e depois divergem
+        for (int i = 0; i < 45; i++)
         {
             projeteis[i].ativo = true;
 
@@ -134,7 +144,7 @@ void gerarPadraoAtaque(Boss *boss, Projetil projeteis[], int padrao)
             float dist = sqrtf(dx * dx + dy * dy);
 
             // Normalizar e dar velocidade
-            float velocidade = GetRandomValue(3, 7);
+            float velocidade = GetRandomValue(8, 12);
             projeteis[i].velocidade = (Vector2){
                 (dx / dist) * velocidade,
                 (dy / dist) * velocidade};
@@ -142,6 +152,40 @@ void gerarPadraoAtaque(Boss *boss, Projetil projeteis[], int padrao)
             // Ângulo para rotação do projétil
             projeteis[i].angulo = atan2f(dy, dx);
         }
+            break;
+        case 1:
+            for(int j = 0; j < 5; j++) {
+                for (int i = 0 + j*20; i < 20 + j*20; i++)
+                {
+                    projeteis[i].ativo = true;
+                    projeteis[i].area = (Rectangle){GetRandomValue(50 + (screenWidth*j/5), screenWidth/10 + (screenWidth*j/5)),10, 15, 15};
+                    projeteis[i].velocidade = (Vector2){
+                        0,
+                        GetRandomValue(15, 25)   // Velocidade vertical variável
+                    };
+                    projeteis[i].angulo = 0;
+                }
+            }
+            break;
+        case 2:
+            for(int j = 0; j < 5; j++) {
+                for (int i = 0 + j*20; i < 20 + j*20; i++)
+                {
+                    projeteis[i].ativo = true;
+                    projeteis[i].area = (Rectangle){10,GetRandomValue(50 + (screenHeight*j/5), screenHeight/10 + (screenHeight*j/5)), 15, 15};
+                    projeteis[i].velocidade = (Vector2){
+                        GetRandomValue(15, 25),
+                        0   // Velocidade vertical variável
+                    };
+                    projeteis[i].angulo = 0;
+                }
+            }
+            break;
+        
+        default:
+            break;
+        }
+        
         break;
     }
     }
@@ -166,8 +210,8 @@ void atualizarProjeteis(Boss *boss, Projetil projeteis[])
             break;
 
         case 1: // Padrão Espiral
-            projeteis[i].velocidade.x *= 1.02f;
-            projeteis[i].velocidade.y *= 1.02f;
+            projeteis[i].velocidade.x *= 1.01f;
+            projeteis[i].velocidade.y *= 1.01f;
             break;
 
         case 2: // Padrão convergente
@@ -177,13 +221,6 @@ void atualizarProjeteis(Boss *boss, Projetil projeteis[])
             float dCentroY = centerY - projeteis[i].area.y;
             float distCentro = sqrtf(dCentroX * dCentroX + dCentroY * dCentroY);
 
-            if (distCentro < 25)
-            {
-                // Inverte a direção para ir para fora
-                projeteis[i].velocidade.x = -projeteis[i].velocidade.x * 1.5f;
-                projeteis[i].velocidade.y = -projeteis[i].velocidade.y * 1.5f;
-            }
-            break;
         }
 
         // Desenha o tiro
@@ -215,16 +252,17 @@ void atualizarProjeteis(Boss *boss, Projetil projeteis[])
     }
 }
 
-void updateBoss(Boss *boss, int dano, Rectangle area_boss, Projetil projeteis[], int *cooldown_atk, int *acertou_palavra, int dano_ataque)
+void updateBoss(Boss *boss, Rectangle area_boss, Projetil projeteis[], int *cooldown_atk, int *acertou_palavra, int dano_ataque)
 {
     // Atualiza o padrão baseado na vida atual do boss
-    if (boss->vida > 70)
+    if (boss->vida > 140)
         boss->padrao_atual = 0;
-    else if (boss->vida > 40)
+    else if (boss->vida > 70)
         boss->padrao_atual = 1;
-    else
+    else{
         boss->padrao_atual = 2;
-
+        boss->cooldown_atk = 240;
+    }
     drawBoss(boss, area_boss.x, area_boss.y);
 
     // Verificar se acertou a palavra
@@ -235,16 +273,13 @@ void updateBoss(Boss *boss, int dano, Rectangle area_boss, Projetil projeteis[],
             boss->vida = 0;
         (*acertou_palavra) = 0;
     }
-
+    
     if (*cooldown_atk >= boss->cooldown_atk)
     {
         gerarPadraoAtaque(boss, projeteis, boss->padrao_atual);
         *cooldown_atk = 0;
     }
-    else
-    {
-        (*cooldown_atk)++;
-    }
+    else (*cooldown_atk)++;  
 
     atualizarProjeteis(boss, projeteis);
 }
