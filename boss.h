@@ -31,7 +31,7 @@ void initBoss(Boss *boss, int vida, int velocidade_ataque, int ataque, int coold
 void drawBoss(Boss *boss, int x, int y);
 void gerarPadraoAtaque(Boss *boss, Projetil projeteis[], int padrao);
 void atualizarProjeteis(Boss *boss, Projetil projeteis[]);
-void updateBoss(Boss *boss, int dano, Rectangle area_boss, Projetil projeteis[], int *cooldown_atk, int *acertou_palavra, int dano_ataque);
+void updateBoss(Boss *boss, Rectangle area_boss, Projetil projeteis[], int *cooldown_atk, int *acertou_palavra, int dano_ataque);
 
 #include "boss.c"
 #endif
