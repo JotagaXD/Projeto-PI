@@ -62,8 +62,8 @@ void menu(int *init, int *state) {
             switch (currentScreen) {
                 case 1: *init = 1; *state = 1; break;
                 case 2: *init = 1; *state = 2; break;
-                case 3: DrawText("Você escolheu o Jogo Completo", 200, 300, 30, BLACK); break;
-                case 4:  DrawText("Créditos: Arte gerada por IA", 200, 300, 30, BLACK); break;
+                case 3: *init = 1; *state = 3; break;
+                case 4:  DrawText("Créditos: Arte gerada por IA", 550, 100, 40, YELLOW); break;
                 default: break;
             }
             
