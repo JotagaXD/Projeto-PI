@@ -18,7 +18,7 @@ melodia
 relampago
 tesoura
 arcoiris
-caminhão
+caminhao
 escada
 floresta
 girassol
