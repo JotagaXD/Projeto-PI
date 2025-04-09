@@ -18,10 +18,10 @@ void UpdatePlayer(Player *player, Rectangle *textbox, StringActions *head, float
         player->posicao.y = 0;
     if (player->posicao.y > 1080 - 40)
         player->posicao.y = 1080 - 40;
-    if (player->posicao.x < 0)
-        player->posicao.x = 0;
-    if (player->posicao.x > 1920 - 40)
-        player->posicao.x = 1920 - 40;
+    if (player->posicao.x < 0 + 20)
+        player->posicao.x = 0+ 20;
+    if (player->posicao.x > 1920 - 20)
+        player->posicao.x = 1920 - 20;
 
     int word_size = MeasureText(head->string, 30);
     int word_lenght = strlen(head->string);
@@ -46,6 +46,7 @@ void UpdatePlayer(Player *player, Rectangle *textbox, StringActions *head, float
         text_pos_x += lettersize + 3;
     }
     
+    DrawText(TextFormat("%d/100", player->vida), 10, 10, 40, GREEN);
 }   
 
 void DamagePlayer(Player *player, Projetil *projeteis, int *invincibility) {
