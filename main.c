@@ -33,6 +33,12 @@ int main () {
             case 2:
                 win = fase2(&init);
                 break;
+            case 3:
+                win = fase1(&init);
+                if (win){
+                    win = fase2(&init);
+                }
+                break;
             default:
                 break;
             }
