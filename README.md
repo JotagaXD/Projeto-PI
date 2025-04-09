@@ -1,5 +1,3 @@
-# Meu Projeto Raylib
-
 INTEGRANTES - EQUIPE 4
 
 Ianne Vitória Cruz Fernandes
@@ -10,6 +8,6 @@ Henrique Mendes Bezerra Xavier Filho
 
 João Henrique Moraes Guedes
 
-Henrique De Andrade Cavalcanti
+Pedro Henrique De Andrade Cavalcanti
 
 Júlio César Silva
