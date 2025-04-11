@@ -12,7 +12,7 @@
 #include "boss.h"
 #include "screens.h"
 
-int fase2(int *init);
+int fase2(int *init, bool *win);
 
 #include "fase2.c"
 

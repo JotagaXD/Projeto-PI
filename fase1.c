@@ -1,6 +1,6 @@
 #include "fase1.h"
 
-int fase1(int *init, int state) {
+int fase1(int *init, bool *win, int state) {
     
     if (state == 3){
         lore();
@@ -69,9 +69,11 @@ int fase1(int *init, int state) {
     }
     *init = 0;
     if (end == true) {
+        *win = true;
         wins();
     }
     else if (timer3 == 120) {
+        *win = false;
         defeat();
     }
     return 0;

@@ -3,7 +3,7 @@
 #define MAX_INPUT_CHARS    25
 #define PLAYER_H_SPEED 5
 
- int fase2 (int *init) {
+ int fase2 (int *init, bool *win) {
     int screenWidth = 1920, screenHeight = 1080;
     InitWindow(screenWidth, screenHeight, "Test");
     Texture2D backgd = LoadTexture("sprites/background2.png");
@@ -98,8 +98,10 @@
     }
     *init = 0;
     if (boss.vida <= 0) {
+        *win = 1;
         wins();
     } else if (player.vida <= 0) {
+        *win = 0;
         defeat();
     }
     return 0;

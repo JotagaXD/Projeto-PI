@@ -15,6 +15,6 @@
 
 #include "fase1.c"
 
-int fase1(int *init, int state);
+int fase1(int *init, bool *win, int state);
 
 #endif
